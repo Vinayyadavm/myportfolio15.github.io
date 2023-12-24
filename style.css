@@ -79,6 +79,7 @@ section .title::after{
 
 /* navbar styling */
 .navbar{
+    background-color: #070707;
     position: fixed;
     width: 100%;
     z-index: 999;
@@ -362,19 +363,22 @@ section .title::after{
     top: 0;
     background: crimson;
 }
-.skills-content .right .html::before{
-    width: 90%;
+.skills-content .right .HTML5::before{
+    width: 100%;
 }
-.skills-content .right .css::before{
+.skills-content .right .CSS3::before{
     width: 60%;
 }
-.skills-content .right .js::before{
+.skills-content .right .JavaScript::before{
     width: 80%;
 }
-.skills-content .right .php::before{
+.skills-content .right .React Js::before{
     width: 50%;
 }
-.skills-content .right .mysql::before{
+.skills-content .right .MySQL::before{
+    width: 70%;
+}
+.skills-content .right .Node Js::before{
     width: 70%;
 }
 
