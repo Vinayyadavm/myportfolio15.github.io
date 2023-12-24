@@ -1,73 +1,96 @@
-$(document).ready(function(){
-    $(window).scroll(function(){
-        // sticky navbar on scroll script
-        if(this.scrollY > 20){
-            $('.navbar').addClass("sticky");
-        }else{
-            $('.navbar').removeClass("sticky");
+document.addEventListener("DOMContentLoaded", function () {
+    var navbar = document.querySelector('.navbar');
+    var scrollUpBtn = document.querySelector('.scroll-up-btn');
+    var menuBtn = document.querySelector('.menu-btn');
+    var menuItems = document.querySelectorAll('.navbar .menu li a');
+    
+    window.addEventListener("scroll", function () {
+        // Sticky navbar on scroll
+        if (window.scrollY > 20) {
+            navbar.classList.add("sticky");
+        } else {
+            navbar.classList.remove("sticky");
         }
-        
-        // scroll-up button show/hide script
-        if(this.scrollY > 500){
-            $('.scroll-up-btn').addClass("show");
-        }else{
-            $('.scroll-up-btn').removeClass("show");
+
+        // Scroll-up button show/hide
+        if (window.scrollY > 500) {
+            scrollUpBtn.classList.add("show");
+        } else {
+            scrollUpBtn.classList.remove("show");
         }
     });
 
-    // slide-up script
-    $('.scroll-up-btn').click(function(){
-        $('html').animate({scrollTop: 0});
-        // removing smooth scroll on slide-up button click
-        $('html').css("scrollBehavior", "auto");
+    // Slide-up script
+    scrollUpBtn.addEventListener("click", function () {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Removing smooth scroll on slide-up button click
+        document.documentElement.style.scrollBehavior = "auto";
     });
 
-    $('.navbar .menu li a').click(function(){
-        // applying again smooth scroll on menu items click
-        $('html').css("scrollBehavior", "smooth");
+    menuItems.forEach(function (item) {
+        // Applying smooth scroll on menu items click
+        item.addEventListener("click", function () {
+            document.documentElement.style.scrollBehavior = "smooth";
+        });
     });
 
-    // toggle menu/navbar script
-    $('.menu-btn').click(function(){
-        $('.navbar .menu').toggleClass("active");
-        $('.menu-btn i').toggleClass("active");
+    // Toggle menu/navbar script
+    menuBtn.addEventListener("click", function () {
+        document.querySelector('.navbar .menu').classList.toggle("active");
+        menuBtn.querySelector('i').classList.toggle("active");
     });
 
-    // typing text animation script
-    var typed = new Typed(".typing", {
-        strings: ["YouTuber", "Developer", "Blogger", "Designer", "Freelancer"],
-        typeSpeed: 100,
-        backSpeed: 60,
-        loop: true
-    });
+    // Typing text animation script
+    var typeAnimation = function (element, strings) {
+        var currentStringIndex = 0;
+        var currentString = strings[currentStringIndex];
+        var typingSpeed = 100;
+        var backspacingSpeed = 60;
 
-    var typed = new Typed(".typing-2", {
-        strings: ["YouTuber", "Developer", "Blogger", "Designer", "Freelancer"],
-        typeSpeed: 100,
-        backSpeed: 60,
-        loop: true
-    });
-
-    // owl carousel script
-    $('.carousel').owlCarousel({
-        margin: 20,
-        loop: true,
-        autoplay: true,
-        autoplayTimeOut: 2000,
-        autoplayHoverPause: true,
-        responsive: {
-            0:{
-                items: 1,
-                nav: false
-            },
-            600:{
-                items: 2,
-                nav: false
-            },
-            1000:{
-                items: 3,
-                nav: false
+        var type = function () {
+            if (currentStringIndex < strings.length) {
+                if (element.textContent !== currentString) {
+                    element.textContent += currentString.charAt(0);
+                    setTimeout(type, typingSpeed);
+                } else {
+                    setTimeout(backspace, 1000);
+                }
             }
+        };
+
+        var backspace = function () {
+            if (element.textContent.length > 0) {
+                element.textContent = element.textContent.slice(0, -1);
+                setTimeout(backspace, backspacingSpeed);
+            } else {
+                currentStringIndex = (currentStringIndex + 1) % strings.length;
+                currentString = strings[currentStringIndex];
+                setTimeout(type, 500);
+            }
+        };
+
+        type();
+    };
+
+    typeAnimation(document.querySelector(".typing"), ["YouTuber", "Developer", "Blogger", "Designer", "Freelancer"]);
+    typeAnimation(document.querySelector(".typing-2"), ["YouTuber", "Developer", "Blogger", "Designer", "Freelancer"]);
+
+    // Owl carousel script (Simplified, without jQuery)
+    var carousel = document.querySelector('.carousel');
+    var items = document.querySelectorAll('.carousel .item');
+    var margin = 20;
+    var currentIndex = 0;
+
+    function updateCarousel() {
+        var windowWidth = window.innerWidth;
+
+        if (windowWidth < 600) {
+            carousel.style.transform = 'translateX(' + (-currentIndex * (items[0].offsetWidth + margin)) + 'px)';
+        } else {
+            carousel.style.transform = 'translateX(' + (-currentIndex * (items[0].offsetWidth + margin * 2)) + 'px)';
         }
-    });
+    }
+
+    window.addEventListener('resize', updateCarousel);
+    updateCarousel();
 });
